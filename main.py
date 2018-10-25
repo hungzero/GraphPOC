@@ -2,7 +2,7 @@
 import sys
 import random
 import time
-import os
+import collections
 
 lines = []
 start_point = {}
@@ -147,10 +147,45 @@ def random_color(number):
     return color_code_list
 
 
-def bfs(input_graph,start_point,end_point):
-    queue = []
+def bfs(metro_lines, start_position, end_position):
+    queue = [[start_position]]
     checked = []
-    pass
+    return_paths = []
+
+    while queue:
+        current_path = queue.pop(0)
+        current_point = current_path[-1]
+
+        station_at_current_point = get_station(metro_lines, current_point)
+
+        # expand form current point
+        point_to_expand = station_at_current_point["links"] + station_at_current_point["connected_stations"]
+        for point in point_to_expand:
+            # buid path
+            if point not in checked:
+                new_path = current_path + [point]
+                checked.append(point)
+                if point == end_position:
+                    return_paths.append(new_path)
+                else:
+                    queue.append(new_path)
+    if len(return_paths) > 0:
+        return return_paths
+    else:
+        return None
+
+
+def bfs_move(metro_lines, train, end_station):
+    current_station = get_station(metro_lines, train["position"])
+    paths = bfs(metro_lines, current_station["name"], end_station)
+    if paths is not None:
+        paths[0].pop(0)
+        possible_next_station = paths[0].pop(0)
+        next_station = get_station(metro_lines, possible_next_station)
+        if len(next_station["trains"]) < 1 or next_station["type"] == "E":
+            next_station_position = next_station["name"]
+            return next_station_position
+    return None
 
 
 def wandering_move(metro_lines, train):
@@ -209,6 +244,7 @@ def main():
 
         for train in trains:
             next_move = wandering_move(lines, train)
+            # next_move = bfs_move(lines, train, end_point["name"])
             if next_move is not None:
                 move_train(lines, train, next_move)
                 if next_move == end_point["name"]:

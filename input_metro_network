@@ -3,7 +3,7 @@
 2:station_a_2
 3:station_a_3
 4:station_a_4:station_b_4
-5:station_a_5:station_c_5
+5:station_a_5
 6:station_a_6
 7:station_a_7:station_b_7
 8:station_a_8
@@ -12,22 +12,22 @@
 2:station_b_2
 3:station_b_3:station_c_3
 4:station_b_4:station_a_4
-5:station_b_5
+5:station_b_5:station_c_5
 6:station_b_6
 7:station_b_7:station_a_7
 #line_c
-1:station_c_1
+1:station_c_1:station_c_11
 2:station_c_2
 3:station_c_3:station_b_3
 4:station_c_4
-5:station_c_5:station_a_5
+5:station_c_5:station_b_5
 6:station_c_6
 7:station_c_7
 8:station_c_8
 9:station_c_9
 10:station_c_10
-11station_c_1
+11:station_c_11:station_c_1
 
 START:line_c:9
 END:line_a:2
-TRAINS:14
+TRAINS:25
