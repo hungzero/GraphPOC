@@ -28,6 +28,6 @@
 10:station_c_10
 11station_c_1
 
-START:line_c:5
+START:line_c:9
 END:line_a:2
-TRAINS:4
+TRAINS:14
