@@ -2,7 +2,6 @@
 import sys
 import random
 import time
-import collections
 
 lines = []
 start_point = {}
@@ -40,7 +39,7 @@ def read_input_data(input_filename):
         if 'TRAINS' in line:
             train_num = int(line.split(':')[1])
             for train in range(1, train_num+1):
-                trains.append({"name": "T."+str(train), "position": start_point["name"]})
+                trains.append({"name": "T."+str(train), "position": start_point["name"], "path": []})
 
 
 def update_metro_network_infomation(metro_lines,start_station , end_station, trains_list):
@@ -149,7 +148,7 @@ def random_color(number):
 
 def bfs(metro_lines, start_position, end_position):
     queue = [[start_position]]
-    checked = []
+    checked = [start_position]
     return_paths = []
 
     while queue:
@@ -164,15 +163,35 @@ def bfs(metro_lines, start_position, end_position):
             # buid path
             if point not in checked:
                 new_path = current_path + [point]
-                checked.append(point)
                 if point == end_position:
                     return_paths.append(new_path)
                 else:
+                    checked.append(point)
                     queue.append(new_path)
     if len(return_paths) > 0:
         return return_paths
     else:
         return None
+
+
+def bfs_innitial_path_calculate(metro_lines, start_position, end_position, input_trains):
+    all_paths = bfs(metro_lines, start_position, end_position)
+    if len(all_paths):
+        path_costs = []
+        # calculate path cost
+        for path_index in range(0, len(all_paths)):
+            all_paths[path_index].pop(0)
+            path_cost = {"path": all_paths[path_index], "cost" :len(all_paths[path_index])}
+            path_costs.append(path_cost)
+
+        for train in input_trains:
+            min_path = path_costs[0]
+            for path in path_costs:
+                if path["cost"] < min_path["cost"]:
+                    min_path = path
+            train["path"] = min_path["path"].copy()
+            min_path["cost"] += 1
+
 
 
 def bfs_move(metro_lines, train, end_station):
@@ -184,6 +203,17 @@ def bfs_move(metro_lines, train, end_station):
         next_station = get_station(metro_lines, possible_next_station)
         if len(next_station["trains"]) < 1 or next_station["type"] == "E":
             next_station_position = next_station["name"]
+            return next_station_position
+    return None
+
+def path_move(metro_lines, train, end_station):
+    paths = train["path"]
+    if len(paths) > 0:
+        possible_next_station = paths[0]
+        next_station = get_station(metro_lines, possible_next_station)
+        if len(next_station["trains"]) < 1 or next_station["type"] == "E":
+            next_station_position = next_station["name"]
+            paths.pop(0)
             return next_station_position
     return None
 
@@ -213,44 +243,28 @@ def main():
     start_station = get_station(lines, start_point["name"])
     end_station = get_station(lines, end_point["name"])
 
-    # print str(start_station)
+    bfs_innitial_path_calculate(lines, start_point["name"], end_point["name"], trains)
 
-    max_loop = 200
+    max_loop = 100
     loop = 1
-    mode = "UP"
-    number = int(trains[0]["position"].split(":")[1])
 
+    # main loop
     while loop <= max_loop:
-        # os.system('clear')  # on linux / os x
-        # print("\033[H\033[J")
 
         print_metro_network(lines, start_station, end_station, start_train_number, trains, color_list, loop)
 
         if len(trains) < 1:
             break
 
-        '''
-        if number == len(search_dictionaries("name", "c", lines)[0]["stations"]):
-            mode = "DOWN"
-
-        if number == 1:
-            mode = "UP"
-
-        if mode == "UP":
-            number += 1
-        else:
-            number -= 1
-        '''
-
         for train in trains:
-            next_move = wandering_move(lines, train)
-            # next_move = bfs_move(lines, train, end_point["name"])
+            # next_move = wandering_move(lines, train)
+            next_move = path_move(lines, train, end_point["name"])
             if next_move is not None:
                 move_train(lines, train, next_move)
                 if next_move == end_point["name"]:
                     trains.remove(train)
 
-        time.sleep(0.1)
+        time.sleep(0.8)
         loop += 1
 
 

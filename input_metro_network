@@ -1,5 +1,5 @@
 #line_a
-1:station_a_1
+1:station_a_1:station_b_1
 2:station_a_2
 3:station_a_3
 4:station_a_4:station_b_4
@@ -8,7 +8,7 @@
 7:station_a_7:station_b_7
 8:station_a_8
 #line_b
-1:station_b_1
+1:station_b_1:station_a_1
 2:station_b_2
 3:station_b_3:station_c_3
 4:station_b_4:station_a_4
@@ -30,4 +30,4 @@
 
 START:line_c:9
 END:line_a:2
-TRAINS:25
+TRAINS:5
