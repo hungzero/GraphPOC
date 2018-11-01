@@ -253,6 +253,24 @@ class MetroNetwork:
                 train.path = list(min_path["path"])
                 min_path["cost"] += 1
 
+    def print_step(self, print_each_step, print_statistic):
+        """
+        Just print out the state of metro network
+        :param print_each_step: if true: print the state of each step
+        :param print_statistic: if true: print the statistic
+        :return:
+        """
+        # print the metro state
+        if print_each_step:
+            print(self)
+        # print the statistic
+        if print_statistic:
+            sys.stdout.write("Total loop:" + str(self.total_loop) + "\t" +
+                             "Total trains:" + str(self.total_train) + "\t" +
+                             "Running trains:" + str(self.trains_running) + "\t" +
+                             "Trains at start:" + str(self.trains_at_start) + "\t" +
+                             "Trains at end:" + str(self.trains_at_end) + "\n\n")
+
     def operate(self, max_loop=100, sleep_time=0.2, parallel_path=True, print_each_step=True, print_statistic=True, print_by_line=True):
         """
         Operate the metro network, print it state each loop
@@ -273,17 +291,9 @@ class MetroNetwork:
             self.bfs_initial_path_calculate(self.start_station.code, self.end_station.code, self.trains)
 
         loop = 0
-        # print the metro state for first time
-        if print_each_step:
-            print(self)
-        # print the statistic for first time
-        if print_statistic:
+        # print first time
+        self.print_step(print_each_step, print_statistic)
 
-            sys.stdout.write("Total loop:" + str(self.total_loop) + "\t" +
-                             "Total trains:" + str(self.total_train) + "\t" +
-                             "Running trains:" + str(self.trains_running) + "\t" +
-                             "Trains at start:" + str(self.trains_at_start) + "\t" +
-                             "Trains at end:" + str(self.trains_at_end) + "\n\n")
         # main loop
         while loop < max_loop:
             # move each train
@@ -304,16 +314,8 @@ class MetroNetwork:
             self.trains_at_end = len(self.get_station(self.end_station.code).trains)
             self.trains_running = len(self.trains)
 
-            # print result of each step
-            if print_each_step:
-                print(self)
-            # print the statistic for each step
-            if print_statistic:
-                sys.stdout.write("Total loop:" + str(self.total_loop) + "\t" +
-                                 "Total trains:" + str(self.total_train) + "\t" +
-                                 "Running trains:" + str(self.trains_running) + "\t" +
-                                 "Trains at start:" + str(self.trains_at_start) + "\t" +
-                                 "Trains at end:" + str(self.trains_at_end) + "\n\n")
+            # print each loop
+            self.print_step(print_each_step, print_statistic)
 
             if len(self.trains) < 1:
                 break

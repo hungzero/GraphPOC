@@ -10,7 +10,7 @@ if __name__ == "__main__":
     filename = "delhi-metro-stations"
     max_loop = 100
     sleep_time = 0.1
-    parallel_path = False
+    parallel_path = True
     print_each_step = True
     print_statistic = True
     print_by_line = True
