@@ -271,7 +271,8 @@ class MetroNetwork:
                              "Trains at start:" + str(self.trains_at_start) + "\t" +
                              "Trains at end:" + str(self.trains_at_end) + "\n\n")
 
-    def operate(self, max_loop=100, sleep_time=0.2, parallel_path=True, print_each_step=True, print_statistic=True, print_by_line=True):
+    def operate(self, max_loop=100, sleep_time=0.2, parallel_path=True, print_each_step=True,
+                print_statistic=True, print_by_line=True):
         """
         Operate the metro network, print it state each loop
         :param parallel_path:
