@@ -5,7 +5,9 @@ import metro_network
 if __name__ == "__main__":
 
     # control variables
-    filename = "input_metro_network"
+    # filename = "input_metro_network_2"
+    # filename = "input_metro_network"
+    filename = "delhi-metro-stations"
     max_loop = 100
     sleep_time = 0.1
     parallel_path = False

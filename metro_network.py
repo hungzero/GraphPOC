@@ -285,7 +285,7 @@ class MetroNetwork:
                              "Trains at start:" + str(self.trains_at_start) + "\t" +
                              "Trains at end:" + str(self.trains_at_end) + "\n\n")
         # main loop
-        while loop <= max_loop:
+        while loop < max_loop:
             # move each train
             train_index = 0
             while train_index < len(self.trains):
