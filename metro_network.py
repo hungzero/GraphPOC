@@ -31,7 +31,6 @@ class MetroNetwork:
         self.read_input_data(input_filename)
         self.update_metro_network_information()
 
-
     def __str__(self):
         """
         Print out the the stations that occupied by trains
